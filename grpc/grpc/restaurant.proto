@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+option java_package = "com.learn";
+option java_outer_classname = "RestaurantProto";
+
+service RestaurantService {
+  // 單次請求-回應
+  rpc GetRestaurantInfo (EmptyRequest) returns (RestaurantInfo);
+
+  // 伺服器端串流
+  rpc GetMenuItems (EmptyRequest) returns (stream MenuItem);
+
+  // 客戶端串流
+  rpc PlaceOrder (stream OrderItem) returns (OrderSummary);
+
+  // 雙向串流
+  rpc Chat (stream ChatMessage) returns (stream ChatMessage);
+}
+
+
+// 消息定義
+
+message RestaurantInfo {
+  string name = 1;
+  string address = 2;
+  string hours = 3; // 營業時間
+}
+
+message MenuItem {
+  string name = 1;
+  float price = 2;
+}
+
+message OrderItem {
+  string name = 1;
+  int32 quantity = 2;
+}
+
+message OrderSummary {
+  float totalPrice = 1;
+}
+
+message ChatMessage {
+  string sender = 1; // 發送者（客戶端或伺服器）
+  string message = 2; // 聊天內容
+}
+
+message EmptyRequest {}
